@@ -19,6 +19,9 @@
     "url": "https://github.com/PerfectoMobileDev/perfecto-cypress-reporter/issues"
   },
   "homepage": "https://github.com/PerfectoMobileDev/perfecto-cypress-reporter#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "dependencies": {
     "axios": "^0.20.0"
   },
