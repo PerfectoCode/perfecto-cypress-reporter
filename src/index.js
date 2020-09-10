@@ -1,3 +1,4 @@
+/* global Cypress, cy */
 const axios = require('axios');
 
 const LAB_EXECUTION_REPORT_URL = 'http://localhost:3009/report';
@@ -41,6 +42,6 @@ Cypress.on('test:before:run', async function (test) {
 Cypress.on('command:start', (command) => {
   console.log('[perfecto-Cypress] command:start', command);
 })
-Cypress.on('command:end', function (command) {
+Cypress.on('command:end', function (/* command */) {
   // console.log('[perfecto-Cypress] command:end:run', command);
 })
