@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PerfectoMobileDev/perfecto-cypress-reporter.git"
+    "url": "git+https://github.com/PerfectoCode/perfecto-cypress-reporter.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/PerfectoMobileDev/perfecto-cypress-reporter/issues"
+    "url": "https://github.com/PerfectoCode/perfecto-cypress-reporter/issues"
   },
-  "homepage": "https://github.com/PerfectoMobileDev/perfecto-cypress-reporter#readme",
+  "homepage": "https://github.com/PerfectoCode/perfecto-cypress-reporter#readme",
   "publishConfig": {
     "access": "public"
   },
