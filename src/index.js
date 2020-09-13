@@ -10,16 +10,25 @@ const getFiledRecursively = (field, data, delimiter = ' - ') => {
   return (parentsValue ? parentsValue + delimiter : '') + data[field];
 };
 
-Cypress.on('test:before:run', async function (test) {
+const getCustomFields = (test) => {
+  const customFields = [];
+
+  if (test.invocationDetails && test.invocationDetails.relativeFile) {
+    customFields.push({name: 'specFile', value: test.invocationDetails.relativeFile})
+  }
+
+  return customFields;
+};
+
+Cypress.on('test:before:run', function (_test, runner) {
   const startTime = new Date().getTime();
-  const title = getFiledRecursively('title', test);
+  const title = getFiledRecursively('title', runner);
   let reportingTestId = '';
 
   cy.once('test:after:run', function (test) {
     const status = test.state === 'passed' ? 'PASSED' : 'FAILED';
     const message = status === 'FAILED' ? test.err.stack : '';
 
-    console.log('test', test);
     return axios.post(LAB_EXECUTION_REPORT_URL + '/test-end/' + reportingTestId, {
       status,
       endTime: new Date().getTime(),
@@ -28,11 +37,11 @@ Cypress.on('test:before:run', async function (test) {
       .catch(() => {});
   });
 
-  await axios.post(LAB_EXECUTION_REPORT_URL + '/test-start', {
+  axios.post(LAB_EXECUTION_REPORT_URL + '/test-start', {
     name: title,
     startTime,
     context: {
-      customFields: [{name: 'specFile', value: test.invocationDetails.relativeFile}]
+      customFields: [...getCustomFields(runner)]
     }
   })
     .then(({data}) => reportingTestId = data.testId)
