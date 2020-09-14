@@ -10,11 +10,15 @@ const getFiledRecursively = (field, data, delimiter = ' - ') => {
   return (parentsValue ? parentsValue + delimiter : '') + data[field];
 };
 
-const getCustomFields = (test) => {
+const getCustomFields = () => {
   const customFields = [];
 
-  if (test.invocationDetails && test.invocationDetails.relativeFile) {
-    customFields.push({name: 'specFile', value: test.invocationDetails.relativeFile})
+  if (Cypress.spec && Cypress.spec.relative) {
+    customFields.push({name: 'SpecFile', value: Cypress.spec.relative})
+  }
+
+  if (Cypress.version) {
+    customFields.push({name: 'CypressVersion', value: Cypress.version})
   }
 
   return customFields;
@@ -41,7 +45,7 @@ Cypress.on('test:before:run', function (_test, runner) {
     name: title,
     startTime,
     context: {
-      customFields: [...getCustomFields(runner)]
+      customFields: [...getCustomFields()]
     }
   })
     .then(({data}) => reportingTestId = data.testId)
