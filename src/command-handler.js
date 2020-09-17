@@ -12,18 +12,23 @@ const parseCommand = (command) => {
 const safeStringify = (obj, indent = 2) => {
   let cache = [];
   let retVal;
+  let items = 0;
   try {
-    retVal = JSON.stringify(
-      obj,
-      (key, value) =>
-        typeof value === "object" && value !== null
+    retVal = JSON.stringify(obj, (key, value) => {
+        items ++;
+        if (items > 30) {
+          return undefined;
+        }
+        return typeof value === "object" && value !== null
           ? cache.includes(value)
-          ? undefined // Duplicate reference found, discard key
-          : cache.push(value) && value // Store value in our collection
-          : value,
+            ? undefined // Duplicate reference found, discard key
+            : cache.push(value) && value // Store value in our collection
+          : value;
+      },
       indent
     );
-  } catch (e) {}
+  } catch (e) {
+  }
   cache = null;
   return retVal;
 };
