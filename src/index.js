@@ -17,11 +17,15 @@ const getFiledRecursively = (field, data, delimiter = ' - ') => {
   return (parentsValue ? parentsValue + delimiter : '') + data[field];
 };
 
+const getSpecFile = () =>  Cypress.spec && Cypress.spec.relative;
+
 const getCustomFields = () => {
   const customFields = [];
 
-  if (Cypress.spec && Cypress.spec.relative) {
-    customFields.push({name: 'SpecFile', value: Cypress.spec.relative})
+  let specFile = getSpecFile();
+
+  if (specFile) {
+    customFields.push({name: 'SpecFile', value: specFile})
   }
 
   if (Cypress.version) {
@@ -73,6 +77,7 @@ Cypress.on('test:before:run:async', function (_test, runner) {
   return axios.post(LAB_EXECUTION_REPORT_URL + '/test-start', {
     name: getFiledRecursively('title', runner),
     startTime: new Date().getTime(),
+    specFile: getSpecFile(),
     context: { customFields: [...getCustomFields()] }
   })
     .then(({data}) => {
