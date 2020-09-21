@@ -27,8 +27,7 @@ const safeStringify = (obj, indent = 2) => {
       },
       indent
     );
-  } catch (e) {
-  }
+  } catch (e) { /* ignore error */ }
   cache = null;
   return retVal;
 };
