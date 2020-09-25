@@ -40,6 +40,7 @@ const isFailed = (test) => {
 };
 
 Cypress.on('test:before:run:async', function (_test, runner) {
+  const testStartTime = new Date().getTime();
   let failedCommand;
   let reportingTestId = '';
 
@@ -48,9 +49,17 @@ Cypress.on('test:before:run:async', function (_test, runner) {
     const status = isTestFailed ? REPORTING_TEST_STATUS.FAILED : REPORTING_TEST_STATUS.PASSED;
     const message = isTestFailed ? test.err.stack : '';
 
+    const testEndTime = new Date().getTime();
     return axios.post(
-      LAB_EXECUTION_REPORT_URL + '/test-end/' + reportingTestId,
-      { status, message, endTime: new Date().getTime() }
+      LAB_EXECUTION_REPORT_URL + '/test-end/',
+      {
+        status,
+        message,
+        name: getFiledRecursively('title', runner),
+        specFile: getSpecFile(),
+        endTime: testEndTime,
+        duration: testEndTime - testStartTime
+      }
     ).catch(ignoreReporterErrors);
   });
 
@@ -69,23 +78,19 @@ Cypress.on('test:before:run:async', function (_test, runner) {
 
   cy.on('command:end', (command) => {
     axios.post(
-      LAB_EXECUTION_REPORT_URL + '/command/' + reportingTestId,
+      LAB_EXECUTION_REPORT_URL + '/command/',
       commandHandler.getCommandParams(command)
     ).catch(ignoreReporterErrors);
   });
 
   return axios.post(LAB_EXECUTION_REPORT_URL + '/test-start', {
     name: getFiledRecursively('title', runner),
-    startTime: new Date().getTime(),
+    startTime: testStartTime,
     specFile: getSpecFile(),
     context: { customFields: [...getCustomFields()] }
   })
     .then(({data}) => {
       reportingTestId = data.testId;
-      cy.addAlias(runner.ctx, {
-        subject: reportingTestId,
-        alias: 'failedScreenshotDetails'
-      });
     })
     .catch(ignoreReporterErrors);
 });
