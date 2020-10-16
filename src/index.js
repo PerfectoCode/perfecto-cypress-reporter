@@ -44,7 +44,9 @@ Cypress.on('test:before:run:async', function (_test, runner) {
   let failedCommand;
   let reportingTestId = '';
 
-  cy.once('test:after:run', (test) => {
+  // TODO: (Elhay) second test not reported??
+  // TODO: (Elhay) commands not reported??
+  cy.on('test:after:run', (test) => {
     let isTestFailed = isFailed(test);
     const status = isTestFailed ? REPORTING_TEST_STATUS.FAILED : REPORTING_TEST_STATUS.PASSED;
     const message = isTestFailed ? test.err.stack : '';
