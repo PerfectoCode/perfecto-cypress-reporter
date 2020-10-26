@@ -42,7 +42,6 @@ const isFailed = (test) => {
 Cypress.on('test:before:run:async', function (_test, runner) {
   const testStartTime = new Date().getTime();
   let failedCommand;
-  let reportingTestId = '';
 
   // TODO: (Elhay) second test not reported??
   // TODO: (Elhay) commands not reported??
@@ -93,9 +92,5 @@ Cypress.on('test:before:run:async', function (_test, runner) {
     startTime: testStartTime,
     specFile: getSpecFile(),
     context: { customFields: [...getCustomFields()] }
-  })
-    .then(({data}) => {
-      reportingTestId = data.testId;
-    })
-    .catch(ignoreReporterErrors);
+  }).catch(ignoreReporterErrors);
 });
