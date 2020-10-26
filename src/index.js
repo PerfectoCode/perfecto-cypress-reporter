@@ -66,10 +66,12 @@ Cypress.on('test:before:run:async', function (_test, runner) {
   });
 
   cy.on('fail', (error) => {
-    axios.post(
-      LAB_EXECUTION_REPORT_URL + '/command/' + reportingTestId,
-      commandHandler.getCommandParams(failedCommand, REPORTING_COMMAND_STATUS.FAILURE)
-    ).catch(ignoreReporterErrors);
+    if (failedCommand) {
+      axios.post(
+        LAB_EXECUTION_REPORT_URL + '/command/',
+        commandHandler.getCommandParams(failedCommand, REPORTING_COMMAND_STATUS.FAILURE)
+      ).catch(ignoreReporterErrors);
+    }
     throw error;
   });
 
@@ -83,6 +85,7 @@ Cypress.on('test:before:run:async', function (_test, runner) {
       LAB_EXECUTION_REPORT_URL + '/command/',
       commandHandler.getCommandParams(command)
     ).catch(ignoreReporterErrors);
+    // TODO: (Elhay) try  to report from here about failed command if  we have the status
   });
 
   return axios.post(LAB_EXECUTION_REPORT_URL + '/test-start', {
