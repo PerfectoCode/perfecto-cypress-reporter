@@ -39,7 +39,7 @@ const isFailed = (test) => {
   return test.state === MOCHA_STATUS.FAILED;
 };
 
-Cypress.on('test:before:run:async', function (_test, runner) {
+Cypress.on('test:before:run', function (_test, runner) {
   const testStartTime = new Date().getTime();
   let failedCommand;
 
