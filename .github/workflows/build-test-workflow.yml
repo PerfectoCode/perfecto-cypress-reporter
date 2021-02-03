@@ -26,4 +26,4 @@ jobs:
     - name: Lint
       run: npm run lint
     - name: Test
-      run: npm test
+      run: npm_config_yes=true npx best-test@latest
