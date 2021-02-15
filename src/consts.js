@@ -1,4 +1,4 @@
-const LAB_EXECUTION_REPORT_URL = 'http://localhost:3009/report';
+const LAB_EXECUTION_REPORT_URL = 'http://127.0.0.1:3009/report';
 const MOCHA_STATUS = {
   PASSED: 'passed',
   FAILED: 'failed'
