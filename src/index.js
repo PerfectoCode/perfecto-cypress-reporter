@@ -39,6 +39,15 @@ const isFailed = (test) => {
   return test.state === MOCHA_STATUS.FAILED;
 };
 
+Cypress.on('script:error', function(err){
+  return axios.post(
+    LAB_EXECUTION_REPORT_URL + '/execution-data/',
+    {
+      ...err && err.error && {failedMsg: err.error}
+    }
+  );
+});
+
 Cypress.on('test:before:run', function (_test, runner) {
   const testStartTime = new Date().getTime();
   let failedCommand;
