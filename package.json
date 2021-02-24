@@ -23,7 +23,7 @@
     "access": "public"
   },
   "dependencies": {
-    "axios": "^0.20.0"
+    "axios": "0.21.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
