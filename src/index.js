@@ -48,6 +48,10 @@ Cypress.on('script:error', function(err){
   );
 });
 
+Cypress.on('after:spec', function(){
+    cy.wait(1000)
+});
+
 Cypress.on('test:before:run', function (_test, runner) {
   const testStartTime = new Date().getTime();
   let failedCommand;
