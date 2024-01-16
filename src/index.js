@@ -48,7 +48,7 @@ Cypress.on('script:error', function(err){
   );
 });
 
-Cypress.on('after:spec', function(){
+Cypress.on('after:run', function(){
     cy.wait(10000)
 });
 
