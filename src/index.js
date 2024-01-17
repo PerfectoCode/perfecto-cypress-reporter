@@ -39,10 +39,6 @@ const isFailed = (test) => {
   return test.state === MOCHA_STATUS.FAILED;
 };
 
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
 Cypress.on('script:error', function(err){
   return axios.post(
     LAB_EXECUTION_REPORT_URL + '/execution-data/',
@@ -52,11 +48,7 @@ Cypress.on('script:error', function(err){
   );
 });
 
-
-Cypress.on('after:spec', async function () {
-    await sleep(30000);
-});
-Cypress.on('test:before:run', function (_test, runner) {
+Cypress.on('test:before:run:async', function (_test, runner) {
   const testStartTime = new Date().getTime();
   let failedCommand;
 
