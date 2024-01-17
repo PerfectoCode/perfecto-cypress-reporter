@@ -53,8 +53,8 @@ Cypress.on('script:error', function(err){
 });
 
 
-Cypress.on('after:run', async function () {
-    await sleep(5000);
+Cypress.on('after:spec', async function () {
+    await sleep(30000);
 });
 Cypress.on('test:before:run', function (_test, runner) {
   const testStartTime = new Date().getTime();
