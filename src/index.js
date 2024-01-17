@@ -7,7 +7,6 @@ const {
     REPORTING_COMMAND_STATUS
 } = require('./consts');
 const commandHandler = require('./command-handler');
-let testStartTime;
 const ignoreReporterErrors = () => {/* do nothing this is not relevant to the execution */
 };
 
@@ -63,13 +62,13 @@ Cypress.on('test:after:run', function (_test, runner) {
             name: getFiledRecursively('title', runner),
             specFile: getSpecFile(),
             endTime: testEndTime,
-            duration: testEndTime - testStartTime
+            duration: testEndTime
         }
     ).catch(ignoreReporterErrors);
 });
 
 Cypress.on('test:before:run', function (_test, runner) {
-    testStartTime = new Date().getTime();
+   let testStartTime = new Date().getTime();
     let failedCommand;
 
     // TODO: (Elhay) second test not reported??
