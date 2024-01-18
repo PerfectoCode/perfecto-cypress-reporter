@@ -48,13 +48,13 @@ Cypress.on('script:error', function(err){
   );
 });
 
-Cypress.on('test:before:run:async', function (_test, runner) {
+Cypress.on('test:before:run', async (_test, runner) =>{
   const testStartTime = new Date().getTime();
   let failedCommand;
 
   // TODO: (Elhay) second test not reported??
   // TODO: (Elhay) commands not reported??
-  cy.on('test:after:run', (test) => {
+  cy.on('test:after:run', async (test) => {
     let isTestFailed = isFailed(test);
     const status = isTestFailed ? REPORTING_TEST_STATUS.FAILED : REPORTING_TEST_STATUS.PASSED;
     const message = isTestFailed ? test.err.stack : '';
